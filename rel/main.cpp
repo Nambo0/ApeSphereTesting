@@ -21,6 +21,9 @@
 #include "timer.h"
 #include "ballcolor.h"
 #include "marathon.h"
+#include "moon.h"
+#include "attemptcount.h"
+#include "ilbattle.h"
 
 #include <mkb.h>
 
@@ -106,6 +109,8 @@ void init() {
         timer::disp();
         iw::disp();
         Tetris::get_instance().disp();
+        attemptcount::disp();
+        ilbattle::disp();
         scratch::disp();
         cmseg::disp();
         inputdisp::disp();
@@ -134,6 +139,9 @@ void init() {
         marathon::tick();
         ballcolor::tick();
         freecam::tick();
+        moon::tick();
+        attemptcount::tick();
+        ilbattle::tick();
         scratch::tick();
     });
 
