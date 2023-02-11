@@ -92,6 +92,7 @@ void init() {
     sfx::init();
     menu_defn::init();
     freecam::init();
+    moon::init();
     scratch::init();
 
     patch::hook_function(s_draw_debug_text_tramp, mkb::draw_debugtext, []() {
