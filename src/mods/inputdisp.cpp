@@ -164,16 +164,25 @@ static const mkb::GXColor s_color_map[] = {
 };
 
 static mkb::GXColor get_color() {
-    InputDispColorType color_pref = InputDispColorType(pref::get(pref::U8Pref::InputDispColorType));
+    InputDispColorType color_pref;
+    if(ballcolor::get_player() == 1) color_pref = InputDispColorType(pref::get(pref::U8Pref::InputDispColorType));
+    else color_pref = InputDispColorType(pref::get(pref::U8Pref::InputDispColorType2));
     switch (color_pref) {
         case InputDispColorType::Default: {
-            return s_color_map[pref::get(pref::U8Pref::InputDispColor)];
+            if(ballcolor::get_player() == 1) return s_color_map[pref::get(pref::U8Pref::InputDispColor)];
+            else return s_color_map[pref::get(pref::U8Pref::InputDispColor2)];
         }
         case InputDispColorType::RGB: {
-            return {
+            if(ballcolor::get_player() == 1) return {
                 .r = pref::get(pref::U8Pref::InputDispRed),
                 .g = pref::get(pref::U8Pref::InputDispGreen),
                 .b = pref::get(pref::U8Pref::InputDispBlue),
+                .a = 0xff,
+            };
+            else return {
+                .r = pref::get(pref::U8Pref::InputDispRed2),
+                .g = pref::get(pref::U8Pref::InputDispGreen2),
+                .b = pref::get(pref::U8Pref::InputDispBlue2),
                 .a = 0xff,
             };
         }

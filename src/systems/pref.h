@@ -94,6 +94,19 @@ enum class U8Pref : u8 {
     JumpProfile,
     FullgameTimerOptions,
     SegmentTimerOptions,
+    BallColor2,
+    ApeColor2,
+    BallColorType2,
+    ApeColorType2,
+    MonkeyType2,
+    BallRed2,
+    BallGreen2,
+    BallBlue2,
+    InputDispColor2,
+    InputDispColorType2,
+    InputDispRed2,
+    InputDispGreen2,
+    InputDispBlue2,
 };
 
 void init();

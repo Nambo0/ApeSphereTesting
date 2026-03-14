@@ -105,6 +105,19 @@ enum class PrefId : u16 {
     SegmentTimerOptions = 85,
     ShowDeathCounter = 86,
     CountFirstStageDeaths = 87,
+    BallColor2 = 88,
+    ApeColor2 = 89,
+    BallColorType2 = 90,
+    ApeColorType2 = 91,
+    MonkeyType2 = 92,
+    BallRed2 = 93,
+    BallGreen2 = 94,
+    BallBlue2 = 95,
+    InputDispColor2 = 96,
+    InputDispColorType2 = 97,
+    InputDispRed2 = 98,
+    InputDispGreen2 = 99,
+    InputDispBlue2 = 100,
 };
 
 // Verbatim list of preference IDs we iterate over when writing savefile back out
@@ -193,6 +206,19 @@ static const PrefId s_pref_ids[] = {
     PrefId::SegmentTimerOptions,
     PrefId::ShowDeathCounter,
     PrefId::CountFirstStageDeaths,
+    PrefId::BallColor2,
+    PrefId::ApeColor2,
+    PrefId::BallColorType2,
+    PrefId::ApeColorType2,
+    PrefId::MonkeyType2,
+    PrefId::BallRed2,
+    PrefId::BallGreen2,
+    PrefId::BallBlue2,
+    PrefId::InputDispColor2,
+    PrefId::InputDispColorType2,
+    PrefId::InputDispRed2,
+    PrefId::InputDispGreen2,
+    PrefId::InputDispBlue2,
 };
 
 static std::optional<BoolPref> pref_id_to_bool_pref(PrefId id) {
@@ -372,6 +398,32 @@ static std::optional<U8Pref> pref_id_to_u8_pref(PrefId id) {
             return U8Pref::FullgameTimerOptions;
         case PrefId::SegmentTimerOptions:
             return U8Pref::SegmentTimerOptions;
+        case PrefId::BallColor2:
+            return U8Pref::BallColor2;
+        case PrefId::ApeColor2:
+            return U8Pref::ApeColor2;
+        case PrefId::BallColorType2:
+            return U8Pref::BallColorType2;
+        case PrefId::ApeColorType2:
+            return U8Pref::ApeColorType2;
+        case PrefId::MonkeyType2:
+            return U8Pref::MonkeyType2;
+        case PrefId::BallRed2:
+            return U8Pref::BallRed2;
+        case PrefId::BallGreen2:
+            return U8Pref::BallGreen2;
+        case PrefId::BallBlue2:
+            return U8Pref::BallBlue2;
+        case PrefId::InputDispColor2:
+            return U8Pref::InputDispColor2;
+        case PrefId::InputDispColorType2:
+            return U8Pref::InputDispColorType2;
+        case PrefId::InputDispRed2:
+            return U8Pref::InputDispRed2;
+        case PrefId::InputDispGreen2:
+            return U8Pref::InputDispGreen2;
+        case PrefId::InputDispBlue2:
+            return U8Pref::InputDispBlue2;
         default:
             return {};
     }
@@ -418,7 +470,7 @@ static DefaultU8Pref s_default_u8_prefs[] = {
 
 struct PrefState {
     u8 bool_prefs[8];
-    u8 u8_prefs[33];
+    u8 u8_prefs[46];
 };
 
 static PrefState s_pref_state, s_prev_pref_state, s_default_pref_state;

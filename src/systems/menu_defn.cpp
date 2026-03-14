@@ -50,6 +50,19 @@ static Widget s_input_preset[] = {
             },
     },
 };
+// PLAYER 2
+static Widget s_input_preset_2[] = {
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Preset Color",
+                .choices = INPUTDISP_COLORS,
+                .num_choices = LEN(INPUTDISP_COLORS),
+                .pref = pref::U8Pref::InputDispColor2,
+            },
+    },
+};
 
 static Widget s_input_hex[] = {
     {
@@ -83,6 +96,39 @@ static Widget s_input_hex[] = {
             },
     },
 };
+// PLAYER 2
+static Widget s_input_hex_2[] = {
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Red Value",
+                .pref = pref::U8Pref::InputDispRed2,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Green Value",
+                .pref = pref::U8Pref::InputDispGreen2,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Blue Value",
+                .pref = pref::U8Pref::InputDispBlue2,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+};
 
 static Widget s_inputdisp_subwidgets[] = {
     {
@@ -109,6 +155,7 @@ static Widget s_inputdisp_subwidgets[] = {
                 .pref = pref::BoolPref::InputDispRawStickInputs,
             },
     },
+    // PLAYER 1
     {
         .type = WidgetType::Choose,
         .choose =
@@ -135,6 +182,35 @@ static Widget s_inputdisp_subwidgets[] = {
                 .widgets = s_input_hex,
                 .num_widgets = LEN(s_input_hex),
                 .show_if = [] { return pref::get(pref::U8Pref::InputDispColorType) == 1; },
+            },
+    },
+    // PLAYER 2
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Color Type (Player 2)",
+                .choices = INPUTDISP_COLOR_TYPE_OPTIONS,
+                .num_choices = LEN(INPUTDISP_COLOR_TYPE_OPTIONS),
+                .pref = pref::U8Pref::InputDispColorType2,
+            },
+    },
+    {
+        .type = WidgetType::HideableGroupWidget,
+        .hideable_group =
+            {
+                .widgets = s_input_preset_2,
+                .num_widgets = LEN(s_input_preset_2),
+                .show_if = [] { return pref::get(pref::U8Pref::InputDispColorType2) == 0; },
+            },
+    },
+    {
+        .type = WidgetType::HideableGroupWidget,
+        .hideable_group =
+            {
+                .widgets = s_input_hex_2,
+                .num_widgets = LEN(s_input_hex_2),
+                .show_if = [] { return pref::get(pref::U8Pref::InputDispColorType2) == 1; },
             },
     },
 };
@@ -188,6 +264,19 @@ static Widget s_preset_widgets[] = {
             },
     },
 };
+// PLAYER 2
+static Widget s_preset_widgets_2[] = {
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Preset Color",
+                .choices = BALL_COLORS,
+                .num_choices = LEN(BALL_COLORS),
+                .pref = pref::U8Pref::BallColor2,
+            },
+    },
+};
 
 static Widget s_preset_ape_widgets[] = {
     {
@@ -198,6 +287,19 @@ static Widget s_preset_ape_widgets[] = {
                 .choices = BALL_COLORS,
                 .num_choices = LEN(BALL_COLORS),
                 .pref = pref::U8Pref::ApeColor,
+            },
+    },
+};
+// PLAYER 2
+static Widget s_preset_ape_widgets_2[] = {
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Preset Color",
+                .choices = BALL_COLORS,
+                .num_choices = LEN(BALL_COLORS),
+                .pref = pref::U8Pref::ApeColor2,
             },
     },
 };
@@ -229,6 +331,39 @@ static Widget s_hex_widgets[] = {
             {
                 .label = "Blue Value",
                 .pref = pref::U8Pref::BallBlue,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+};
+// PLAYER 2
+static Widget s_hex_widgets_2[] = {
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Red Value",
+                .pref = pref::U8Pref::BallRed2,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Green Value",
+                .pref = pref::U8Pref::BallGreen2,
+                .min = ballcolor::COLOR_MIN,
+                .max = ballcolor::COLOR_MAX,
+            },
+    },
+    {
+        .type = WidgetType::IntEdit,
+        .int_edit =
+            {
+                .label = "Blue Value",
+                .pref = pref::U8Pref::BallBlue2,
                 .min = ballcolor::COLOR_MIN,
                 .max = ballcolor::COLOR_MAX,
             },
@@ -309,6 +444,79 @@ static Widget s_ball_color_widgets[] = {
                 .choices = MONKEY_TYPES,
                 .num_choices = LEN(MONKEY_TYPES),
                 .pref = pref::U8Pref::MonkeyType,
+            },
+    },
+};
+static Widget s_ball_color_widgets_2[] = {
+    {
+        .type = WidgetType::Header,
+        .header = {"Ball Color"},
+    },
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Ball Color Type",
+                .choices = BALL_COLOR_TYPES,
+                .num_choices = LEN(BALL_COLOR_TYPES),
+                .pref = pref::U8Pref::BallColorType2,
+            },
+    },
+    {
+        .type = WidgetType::HideableGroupWidget,
+        .hideable_group =
+            {
+                .widgets = s_preset_widgets_2,
+                .num_widgets = LEN(s_preset_widgets_2),
+                .show_if = [] { return pref::get(pref::U8Pref::BallColorType2) == 0; },
+            },
+    },
+    {
+        .type = WidgetType::HideableGroupWidget,
+        .hideable_group =
+            {
+                .widgets = s_hex_widgets_2,
+                .num_widgets = LEN(s_hex_widgets_2),
+                .show_if = [] { return pref::get(pref::U8Pref::BallColorType2) == 1; },
+            },
+    },
+    {WidgetType::Separator},
+    {
+        .type = WidgetType::Header,
+        .header = {"Clothing Color"},
+    },
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Clothing Color Type",
+                .choices = CLOTHING_COLOR_TYPES,
+                .num_choices = LEN(CLOTHING_COLOR_TYPES),
+                .pref = pref::U8Pref::ApeColorType2,
+            },
+    },
+    {
+        .type = WidgetType::HideableGroupWidget,
+        .hideable_group =
+            {
+                .widgets = s_preset_ape_widgets_2,
+                .num_widgets = LEN(s_preset_ape_widgets_2),
+                .show_if = [] { return pref::get(pref::U8Pref::ApeColorType2) == 0; },
+            },
+    },
+    {WidgetType::Separator},
+    {
+        .type = WidgetType::Header,
+        .header = {"Monkey"},
+    },
+    {
+        .type = WidgetType::Choose,
+        .choose =
+            {
+                .label = "Monkey Type",
+                .choices = MONKEY_TYPES,
+                .num_choices = LEN(MONKEY_TYPES),
+                .pref = pref::U8Pref::MonkeyType2,
             },
     },
 };
@@ -1880,6 +2088,10 @@ static Widget s_root_widgets[] = {
     {
         .type = WidgetType::Menu,
         .menu = {"Customization", s_ball_color_widgets, LEN(s_ball_color_widgets)},
+    },
+    {
+        .type = WidgetType::Menu,
+        .menu = {"Customization (P2)", s_ball_color_widgets_2, LEN(s_ball_color_widgets_2)},
     },
     {
         .type = WidgetType::Menu,

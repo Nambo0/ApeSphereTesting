@@ -36,6 +36,8 @@ enum class MonkeyType {
 static u32 s_rainbow = 0;  // tick for rainbow animation
 static mkb::GXColor s_default_color;
 static mkb::GXColor s_current_color;
+static u8 player = 1;
+static bool switch_player_on_retry = false;
 
 static patch::Tramp<decltype(&mkb::load_stagedef)> s_load_stagedef_tramp;
 
@@ -55,8 +57,21 @@ static u8 convert_to_ape_color_id(u8 color_choice) {
     return color_choice - 1;
 }
 
+u8 get_player() {return player;}
+
+void update_player() {
+    if(switch_player_on_retry) {
+        if(player == 1) player = 2;
+        else player = 1;
+        switch_player_on_retry = false;
+    }
+}
+
 void switch_monkey() {
-    switch (MonkeyType(pref::get(pref::U8Pref::MonkeyType))) {
+    MonkeyType player_monkey_type;
+    if(player == 1) player_monkey_type = MonkeyType(pref::get(pref::U8Pref::MonkeyType));
+    else player_monkey_type = MonkeyType(pref::get(pref::U8Pref::MonkeyType2));
+    switch (player_monkey_type) {
         case MonkeyType::Default: {
             break;
         }
@@ -88,12 +103,19 @@ void init() {
 
     patch::hook_function(s_load_stagedef_tramp, mkb::load_stagedef, [](u32 stage_id) {
         s_load_stagedef_tramp.dest(stage_id);
+        update_player();
         switch_monkey();
     });
 }
 
 void tick() {
-    BallColorType ball_type = BallColorType(pref::get(pref::U8Pref::BallColorType));
+    if(pad::button_down(mkb::PAD_TRIGGER_R) && pad::button_pressed(mkb::PAD_BUTTON_B)) {
+        switch_player_on_retry = true;
+    }
+
+    BallColorType ball_type;
+    if(player == 1) ball_type = BallColorType(pref::get(pref::U8Pref::BallColorType));
+    else ball_type = BallColorType(pref::get(pref::U8Pref::BallColorType2));
 
     // dont change color if in story mode menu
     if (mkb::main_mode != mkb::MD_GAME || (mkb::sub_mode == mkb::SMD_GAME_SCENARIO_INIT ||
@@ -109,16 +131,24 @@ void tick() {
     switch (ball_type) {
         case BallColorType::Preset: {
             *reinterpret_cast<mkb::GXColor*>(0x80472a34) = s_default_color;  // reset default color
-            u8 color_id = convert_to_ball_color_id(pref::get(pref::U8Pref::BallColor));
+            u8 color_id;
+            if(player == 1) color_id = convert_to_ball_color_id(pref::get(pref::U8Pref::BallColor));
+            else color_id = convert_to_ball_color_id(pref::get(pref::U8Pref::BallColor2));
             mkb::balls[mkb::curr_player_idx].g_ball_color_index = color_id;
             s_current_color = reinterpret_cast<mkb::GXColor*>(0x80472a28)[color_id];
             break;
         }
         case BallColorType::RGB: {
             mkb::balls[mkb::curr_player_idx].g_ball_color_index = convert_to_ball_color_id(0);
-            u8 red = pref::get(pref::U8Pref::BallRed);
-            u8 green = pref::get(pref::U8Pref::BallGreen);
-            u8 blue = pref::get(pref::U8Pref::BallBlue);
+            u8 red;
+            if(player == 1) red = pref::get(pref::U8Pref::BallRed);
+            else red = pref::get(pref::U8Pref::BallRed2);
+            u8 green;
+            if(player == 1) green = pref::get(pref::U8Pref::BallGreen);
+            else green = pref::get(pref::U8Pref::BallGreen2);
+            u8 blue;
+            if(player == 1) blue = pref::get(pref::U8Pref::BallBlue);
+            else blue = pref::get(pref::U8Pref::BallBlue2);
             s_current_color = {red, green, blue, 0};
             *reinterpret_cast<mkb::GXColor*>(0x80472a34) = s_current_color;
             break;
@@ -150,11 +180,14 @@ void tick() {
         }
     }
 
-    ClothingType clothing_type = ClothingType(pref::get(pref::U8Pref::ApeColorType));
+    ClothingType clothing_type;
+    if(player == 1) clothing_type = ClothingType(pref::get(pref::U8Pref::ApeColorType));
+    else clothing_type = ClothingType(pref::get(pref::U8Pref::ApeColorType2));
 
     switch (clothing_type) {
         case ClothingType::Preset: {
-            ape->color_index = convert_to_ape_color_id(pref::get(pref::U8Pref::ApeColor));
+            if(player == 1) ape->color_index = convert_to_ape_color_id(pref::get(pref::U8Pref::ApeColor));
+            else ape->color_index = convert_to_ape_color_id(pref::get(pref::U8Pref::ApeColor2));
             break;
         }
         case ClothingType::Random: {
